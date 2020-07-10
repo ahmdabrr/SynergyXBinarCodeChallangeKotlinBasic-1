@@ -1,17 +1,15 @@
 import java.util.*
 import java.text.NumberFormat
 
-interface CheckoutBarang {
-    var diskon:Double = 0.0
-    var batasDiskon:Int = 0
-
+interface CheckoutBarang{
+    var diskon:Double
+    var batasDiskon:Int
 
     fun opening() {
-        var pelanggan: String = "Non Member"
         println(
             """   
             |----------------------------- 
-            |Checkout Pelanggan ${pelanggan}
+            |Checkout Pelanggan ${dbBarang.pelanggan}
             |-----------------------------
             """.trimMargin()
         )
@@ -37,20 +35,24 @@ interface CheckoutBarang {
     }
 
     fun hasilInputBarang() {
-        val input = Scanner(System.`in`)
-        opening()
+        val localeID = Locale("in", "ID")
+        val numberFormat = NumberFormat.getCurrencyInstance(localeID)
 
-        for (loop in 0..dbBarang.i) {
-            println("${dbBarang.namaBarang[loop]} X ${dbBarang.jumlahBarang[loop]}    : ${dbBarang.hargaBarang[loop]*${dbBarang.jumlahBarang[loop]}} ")
-            dbBarang.totalSemua = dbBarang.totalSemua + (dbBarang.hargaBarang[loop]*dbBarang.jumlahBarang[loop])
+        opening()
+        val rangeLoop = dbBarang.i-1
+        for (loop in 0..rangeLoop) {
+            println("${dbBarang.namaBarang[loop]} X ${dbBarang.jumlahBarang[loop]}    : ${numberFormat.format(dbBarang.hargaBarang[loop] * dbBarang.jumlahBarang[loop]).toString()} ")
+            dbBarang.totalSemua = dbBarang.totalSemua + (dbBarang.hargaBarang[loop] * dbBarang.jumlahBarang[loop])
         }
     }
 
     fun totalBelanja() {
+        val localeID = Locale("in", "ID")
+        val numberFormat = NumberFormat.getCurrencyInstance(localeID)
         println(
             """   
             |----------------------------- 
-            |Total Belanja : ${dbBarang.totalSemua}
+            |Total Belanja : ${numberFormat.format(dbBarang.totalSemua).toString()}
             |-----------------------------
             """.trimMargin()
         )
@@ -62,15 +64,54 @@ interface CheckoutBarang {
 
         println(
             """   
-            |Selamat! Karena total belanjaan lebih besar dari ${numberFormat.format(batasDiskon).toString()}, maka mendapatkan potongan sebesar $diskon %. 
+            |Selamat! Karena total belanjaan lebih 
+            |besar dari ${numberFormat.format(batasDiskon).toString()}, maka 
+            |mendapatkan potongan sebesar $diskon%. 
             |Cukup Bayar ${numberFormat.format(dbBarang.totalSemua-(dbBarang.totalSemua*diskon/100)).toString()}
             |-----------------------------
             """.trimMargin()
         )
-        dbBarang.totalSemua = dbBarang.totalSemua-(dbBarang.totalSemua*diskon)
+        dbBarang.totalSemua = dbBarang.totalSemua-(dbBarang.totalSemua*diskon/100)
+        println("((tekan enter key untuk melanjutkan))")
+        readLine()
     }
 
     fun Bayar() {
+        val input = Scanner(System.`in`)
+        val localeID = Locale("in", "ID")
+        val numberFormat = NumberFormat.getCurrencyInstance(localeID)
+
+        opening()
+        print( """   
+            |Total Belanja : ${numberFormat.format(dbBarang.totalSemua).toString()}
+            |Input Uang Customer :
+            """.trimMargin()
+        )
+        val bayar = input.nextInt()
+        if (bayar < dbBarang.totalSemua){
+            println( """
+            |-----------------------------
+            |Mohon maaf, uang yang anda bayarkan kurang
+            |Proses pembayaran akan diulangi silahkan masukan nominal uang yang benar
+            |-----------------------------
+            """.trimMargin()
+            )
+            println("((tekan enter key untuk melanjutkan))")
+            readLine()
+            Bayar()
+        }
+        else {
+            println( """   
+            |-----------------------------
+            |Kembalian : ${numberFormat.format(bayar - dbBarang.totalSemua).toString()}
+            |-----------------------------
+            |- Terima Kasih - 
+            """.trimMargin()
+            )
+            println("-----------------------------")
+            println("((tekan enter key untuk melanjutkan))")
+            readLine()
+        }
 
     }
 

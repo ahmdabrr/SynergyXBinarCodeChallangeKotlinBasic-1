@@ -6,5 +6,7 @@ object dbBarang {
     var jumlahBarang = ArrayList<Int>()
 
     var i:Int = 0
-    var totalSemua:Int = 0
+    var totalSemua:Double= 0.0
+
+    var pelanggan = "Non Member"
 }

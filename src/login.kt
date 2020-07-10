@@ -1,7 +1,7 @@
 import java.util.*
 
 fun login() {
-    var opening: String = """   
+    val opening: String = """   
     |----------------------------- 
     |Selamat Datang Di Synrgy Mart
     |-----------------------------
@@ -10,9 +10,9 @@ fun login() {
     val input = Scanner(System.`in`)
 
     println(opening)
-    print("Username :")
+    print("Username : ")
     val inputUsername = input.nextLine()
-    print("Password :")
+    print("Password : ")
     val inputPassword = input.nextLine()
 
     when(db.data.containsKey(inputUsername)) {

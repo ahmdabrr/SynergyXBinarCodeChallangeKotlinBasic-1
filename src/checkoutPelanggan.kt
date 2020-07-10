@@ -1,7 +1,7 @@
 import java.util.*
 
 fun checkoutPelanggan() {
-    var opening: String = """   
+    val opening: String = """   
     |----------------------------- 
     |      Checkout Pelanggan
     |-----------------------------
@@ -17,18 +17,23 @@ fun checkoutPelanggan() {
 
     when(inputInt) {
         1 -> {
+            PelangganMember().inputNama()
             PelangganMember().inputBarangLoop()
             PelangganMember().hasilInputBarang()
             PelangganMember().totalBelanja()
-            if (dbBarang.totalSemua > PelangganMember().batasDiskon)
-            {PelangganMember().diskon()}
+            if (dbBarang.totalSemua > PelangganMember().batasDiskon) {
+                PelangganMember().diskon()
+            }
+            PelangganMember().Bayar()
         }
         2 -> {
             PelangganNonMember().inputBarangLoop()
             PelangganNonMember().hasilInputBarang()
             PelangganNonMember().totalBelanja()
-            if (dbBarang.totalSemua > PelangganNonMember().batasDiskon)
-            {PelangganNonMember().diskon()}
+            if (dbBarang.totalSemua > PelangganNonMember().batasDiskon) {
+                PelangganNonMember().diskon()
+            }
+            PelangganNonMember().Bayar()
         }
         else -> {
             println("Input yang anda masukkan salah")

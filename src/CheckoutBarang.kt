@@ -4,8 +4,7 @@ import java.text.NumberFormat
 interface CheckoutBarang {
     var diskon:Double = 0.0
     var batasDiskon:Int = 0
-    val localeID = Locale("in", "ID")
-    val numberFormat = NumberFormat.getCurrencyInstance(localeID)
+
 
     fun opening() {
         var pelanggan: String = "Non Member"
@@ -43,8 +42,7 @@ interface CheckoutBarang {
 
         for (loop in 0..dbBarang.i) {
             println("${dbBarang.namaBarang[loop]} X ${dbBarang.jumlahBarang[loop]}    : ${dbBarang.hargaBarang[loop]*${dbBarang.jumlahBarang[loop]}} ")
-            var total:Int = dbBarang.hargaBarang[loop]*${dbBarang.jumlahBarang[loop]}
-            dbBarang.totalSemua = dbBarang.totalSemua + total
+            dbBarang.totalSemua = dbBarang.totalSemua + (dbBarang.hargaBarang[loop]*dbBarang.jumlahBarang[loop])
         }
     }
 
@@ -59,6 +57,9 @@ interface CheckoutBarang {
     }
 
     fun diskon() {
+        val localeID = Locale("in", "ID")
+        val numberFormat = NumberFormat.getCurrencyInstance(localeID)
+
         println(
             """   
             |Selamat! Karena total belanjaan lebih besar dari ${numberFormat.format(batasDiskon).toString()}, maka mendapatkan potongan sebesar $diskon %. 
@@ -67,6 +68,10 @@ interface CheckoutBarang {
             """.trimMargin()
         )
         dbBarang.totalSemua = dbBarang.totalSemua-(dbBarang.totalSemua*diskon)
+    }
+
+    fun Bayar() {
+
     }
 
 }
